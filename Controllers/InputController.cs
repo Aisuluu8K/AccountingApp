@@ -1,6 +1,7 @@
 ﻿using AccountingApp.Data.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,11 +14,21 @@ namespace AccountingApp.Data.Controllers
         {
             while (string.IsNullOrEmpty(parametr) || parametr.Trim().Length == 0)
             {
-                Console.WriteLine("поле не может быть пустым");
+                Console.WriteLine("Поле не может быть пустым");
                 parametr = Console.ReadLine();
             }
         }
 
+        public static void Return()
+        {
+            Console.Clear();
+            MeinMenu menu = new MeinMenu();
+            menu.GetMenu();
+        }
+        public static void Exit()
+        {
+            Process.GetCurrentProcess().Kill();
+        }
 
     }
 }

@@ -25,7 +25,7 @@ namespace AccountingApp.Data.Controllers
                     {
                         if (command == 0)
                         {
-                            Process.GetCurrentProcess().Kill();
+                            InputController.Exit();
                         }
                         if (command == 1)
                         {
@@ -40,7 +40,7 @@ namespace AccountingApp.Data.Controllers
                                 "6 - Выйти");
 
                             ClientsController clientsController = new ClientsController(db);
-                            
+
 
                             Console.WriteLine("Список клиентов");
                             Console.WriteLine("     ID     |      Имя      |      Фамилия     |");
@@ -72,16 +72,50 @@ namespace AccountingApp.Data.Controllers
                                 case 4:
                                     clientsController.ShowClientsOrders(clientsController.ClientIdInput());
                                     break;
-                                    //case 5:
-                                    //    clientsController.Return();
-                                    //    break;
-                                    //case 6:
-                                    //    clientsController.Exit();
-                                    //    break;
+                                case 5:
+                                    InputController.Return();
+                                    break;
+                                case 6:
+                                    InputController.Exit();
+                                    break;
 
                             }
+                            Console.WriteLine("Выйти в главное меню? (Y|N)");
+                            string getmenu = Console.ReadLine();
+                            if (getmenu.ToLower() == "y" || getmenu.ToLower() == "Y")
+                            {
+                                InputController.Return();
+                            }
+                            if (getmenu.ToLower() == "n" || getmenu.ToLower() == "N")
+                            {
+                                InputController.Exit();
 
+                            }
                         }
+                        if (command == 2)
+                        {
+
+
+
+
+
+
+
+
+                            Console.WriteLine("Выйти в главное меню? (Y|N)");
+                            string getmenu = Console.ReadLine();
+                            if (getmenu.ToLower() == "y" || getmenu.ToLower() == "Y")
+                            {
+                                InputController.Return();
+                            }
+                            if (getmenu.ToLower() == "n" || getmenu.ToLower() == "N")
+                            {
+                                InputController.Exit();
+
+                            }
+                        }
+
+                       
                     }
                 }
             }

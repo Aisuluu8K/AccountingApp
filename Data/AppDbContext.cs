@@ -57,7 +57,7 @@ namespace AccountingApp.Data
                 FirstName = "test",
                 SecondName = "Test",
                 PhoneNum = "0500255255",
-                OrderAmount = controller.CountOrders(1)
+                OrderAmount = 2
             });
 
             SaveChanges();

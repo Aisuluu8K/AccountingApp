@@ -43,8 +43,28 @@ namespace AccountingApp.Data.Controllers
             if (dbSet == default(DbSet<Client>))
                 return;
 
-            dbSet.Remove(item);
-            _context.SaveChanges();
+            if (item != null)
+            {
+                var orders = CountOrders(item.id);
+                if (orders != 0)
+                {
+                    Console.WriteLine("У клиента есть заказы. В случае удаления клиента, все его заказы будут удалены.\n" +
+                        " Вы уверены что хотите удалить клиента? (Y|N)");
+                    string choice = Console.ReadLine();
+                    if (choice.ToLower() == "n" || choice.ToLower() == "N")
+                    {
+                        InputController.Return();
+                    }
+                    if (choice.ToLower() == "y" || choice.ToLower() == "Y")
+                    {
+                        dbSet.Remove(item);
+                        _context.SaveChanges();
+                    }
+                }
+            }
+
+
+
         }
 
         public void Edit(List<Client> item)
@@ -74,9 +94,13 @@ namespace AccountingApp.Data.Controllers
 
         public uint CountOrders(uint clientId)
         {
-            DbSet<Order> orders = _context.Set<Order>();
+            List<Order> list = new List<Order>();
 
-            List<Order> list = orders.Where(x => x.ClientID == clientId).ToList();
+            if (_context.Orders != null || _context.Clients != null)
+            {
+                list = _context.Orders.Where(x => x.ClientID == clientId).ToList();
+            }
+
 
             uint count = (uint)list.Count();
 
@@ -87,26 +111,29 @@ namespace AccountingApp.Data.Controllers
         {
             DbSet<Order> orders = _context.Set<Order>();
 
-            //if (orders == default(DbSet<Order>))
-            //    return default(Order);
+            if (orders == default(DbSet<Order>))
+                return default(Order);
 
             DbSet<Client> client = _context.Set<Client>();
 
-            //if (client == default(DbSet<Client>))
-            //    return default();
+            if (client == default(DbSet<Client>))
+                return default(Client);
 
 
             List<Order> list = orders.Where(x => x.ClientID == clientId).ToList();
 
-            var clientName = client.Where(a => a.id == clientId).Select(p => p.SecondName).FirstOrDefault();
+            var clientName = client.Where(a => a.id == clientId).FirstOrDefault();
 
-            if (clientName == null)
+            if (clientName.Any())
             {
                 Console.WriteLine("Клиент не найден");
                 return null;
             }
+            else
+            {
+                Console.WriteLine($"Заказчик: {clientName.SecondName} {clientName.FirstName}");
+            }
 
-            Console.WriteLine($"Фамилия заказчика: {clientName}\n");
 
             return list;
         }
@@ -115,21 +142,21 @@ namespace AccountingApp.Data.Controllers
         {
             Client client = new Client();
 
-            Console.Write("Введите ваше имя");
+            Console.Write("Введите ваше имя: ");
             string firstName = Console.ReadLine();
 
             InputController.NullException(firstName);
 
             client.FirstName = firstName;
 
-            Console.Write("Введите вашу фамилию");
+            Console.Write("Введите вашу фамилию: ");
             string secondName = Console.ReadLine();
 
             InputController.NullException(secondName);
 
             client.SecondName = secondName;
 
-            Console.Write("Введите ваш номер телефона");
+            Console.Write("Введите ваш номер телефона: ");
             string phoneNum = Console.ReadLine();
 
             InputController.NullException(phoneNum);
@@ -146,25 +173,22 @@ namespace AccountingApp.Data.Controllers
         {
             Client client = new Client();
 
-            Console.WriteLine("Список клиентов");
+            Console.WriteLine("Список клиентов ");
 
             foreach (var i in _context.Clients)
             {
                 Console.WriteLine("     ID     |      Имя      |      Фамилия     |");
                 Console.WriteLine("------------------------------------------------");
-                Console.WriteLine($"{i.id} | {i.FirstName} | {i.SecondName}");
+                Console.WriteLine($" {i.id}    | {i.FirstName} | {i.SecondName}");
             }
 
-            Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть");
-            
-            while (!uint.TryParse(Console.ReadLine(), out uint numberId))
+            Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть ");
+            uint numberId;
+            while (!uint.TryParse(Console.ReadLine(), out numberId))
             {
-                Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть цифрами");
+                Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть цифрами ");
             }
-
-
-
-
+            client = _context.Clients.Where(x => x.id == numberId).FirstOrDefault();
 
             return client;
         }
@@ -236,7 +260,7 @@ namespace AccountingApp.Data.Controllers
             Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть");
 
             uint numberId = 0;
-            while (!uint.TryParse(Console.ReadLine(), out  numberId))
+            while (!uint.TryParse(Console.ReadLine(), out numberId))
             {
                 Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть цифрами");
             }
