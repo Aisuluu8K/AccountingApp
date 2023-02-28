@@ -83,10 +83,10 @@ namespace AccountingApp.Data.Controllers
 
             Console.WriteLine("Данные пользователя успешно изменены!");
             Console.WriteLine("Список клиентов");
+            Console.WriteLine("     ID     |      Имя      |      Фамилия     |");
 
             foreach (var i in dbSet)
             {
-                Console.WriteLine("     ID     |      Имя      |      Фамилия     |");
                 Console.WriteLine("------------------------------------------------");
                 Console.WriteLine($"{i.id} | {i.FirstName} | {i.SecondName}");
             }

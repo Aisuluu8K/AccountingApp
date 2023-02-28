@@ -94,13 +94,53 @@ namespace AccountingApp.Data.Controllers
                         }
                         if (command == 2)
                         {
+                            Console.WriteLine("------------------------------------");
+                            Console.WriteLine("Клиенты \n" +
+                                "введите цифру которая соответствует комманде:\n" +
+                                "1 - Добавить\n" +
+                                "2 - Редактировать\n" +
+                                "3 - Удалить\n" +
+                                "4 - Вернуться к выбору\n" +
+                                "5 - Выйти");
+
+                            OrdersController ordersController = new OrdersController(db);
+
+                            Console.WriteLine("Список Заказов");
+                            Console.WriteLine("     ID     |      Описание      |      Цена     |  Дата регистрации   |   Дата завершения | Клиент |");
+
+                            foreach (var i in Order)
+                            {
+                                Console.WriteLine("------------------------------------------------");
+                                Console.WriteLine($"{i.id} | {i.Description} | {i.OrderPrice} | {i.OrderDate}  | {i.CloseDate}  |  ");
+                            }
 
 
+                            int methodCod;
+                            while (!int.TryParse(Console.ReadLine(), out methodCod))
+                            {
+                                Console.WriteLine("Введите цифру");
+                            }
 
 
+                            switch (methodCod)
+                            {
+                                case 1:
+                                    ordersController.Add(ordersController.InputForAdd());
+                                    break;
+                                case 2:
+                                    ordersController.Edit(ordersController.InputForEdit());
+                                    break;
+                                case 3:
+                                    ordersController.Delete(ordersController.InputForDelete());
+                                    break;
+                                case 4:
+                                    InputController.Return();
+                                    break;
+                                case 5:
+                                    InputController.Exit();
+                                    break;
 
-
-
+                            }
 
                             Console.WriteLine("Выйти в главное меню? (Y|N)");
                             string getmenu = Console.ReadLine();

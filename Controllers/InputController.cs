@@ -18,6 +18,14 @@ namespace AccountingApp.Data.Controllers
                 parametr = Console.ReadLine();
             }
         }
+        public static void NullException(float parametr)
+        {
+            while (float.IsNullOrEmpty(parametr) || parametr.Trim().Length == 0)
+            {
+                Console.WriteLine("Поле не может быть пустым");
+                parametr = Console.ReadLine();
+            }
+        }
 
         public static void Return()
         {
