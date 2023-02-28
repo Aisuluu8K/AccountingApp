@@ -10,7 +10,7 @@ namespace AccountingApp.Data.Repository
     internal interface IRepository<T>
     {
         public T Add(T item);
-        public void Edit(T item);
+        public void Edit(List<T> item);
         public void Delete(T item);
 
     }

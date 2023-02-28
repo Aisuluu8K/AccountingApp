@@ -47,14 +47,17 @@ namespace AccountingApp.Data.Controllers
             _context.SaveChanges();
         }
 
-        public void Edit(Client item)
+        public void Edit(List<Client> item)
         {
             DbSet<Client> dbSet = _context.Set<Client>();
 
             if (dbSet == default(DbSet<Client>))
                 return;
+            var client = item[0];
 
-            dbSet.Update(item);
+            var edit = dbSet.FirstOrDefault(x => x.id == client.id);
+
+            dbSet.Update(edit);
 
             _context.SaveChanges();
 
@@ -95,9 +98,15 @@ namespace AccountingApp.Data.Controllers
 
             List<Order> list = orders.Where(x => x.ClientID == clientId).ToList();
 
-            var clientName = client.Where(a => a.id == clientId).Select(p => p.SecondName);
+            var clientName = client.Where(a => a.id == clientId).Select(p => p.SecondName).FirstOrDefault();
 
-            Console.WriteLine($"Фимилия заказчика: {clientName}\n");
+            if (clientName == null)
+            {
+                Console.WriteLine("Клиент не найден");
+                return null;
+            }
+
+            Console.WriteLine($"Фамилия заказчика: {clientName}\n");
 
             return list;
         }
@@ -128,6 +137,7 @@ namespace AccountingApp.Data.Controllers
             client.PhoneNum = phoneNum;
 
             client.OrderAmount = CountOrders(client.id);
+            client.ClientOrders = ShowClientsOrders(client.id);
 
             return client;
         }
@@ -159,7 +169,7 @@ namespace AccountingApp.Data.Controllers
             return client;
         }
 
-        public Client InputForEdit()
+        public List<Client> InputForEdit()
         {
             Console.WriteLine("Список клиентов");
 
@@ -172,6 +182,7 @@ namespace AccountingApp.Data.Controllers
 
             List<Client> clientInfo = new();
 
+
             Console.Write("Введите id клиента для редактирования: ");
             uint.TryParse(Console.ReadLine(), out uint clientId);
 
@@ -182,40 +193,55 @@ namespace AccountingApp.Data.Controllers
             int.TryParse(Console.ReadLine(), out int field);
             clientInfo = _context.Clients.Where(x => x.id == clientId).ToList();
 
-            
-            switch (field)
+            foreach (Client client in clientInfo)
             {
-                case 1:
-                    Console.WriteLine("Введите новое имя клиента ");
-                    string name = Console.ReadLine();
+                switch (field)
+                {
+                    case 1:
+                        Console.WriteLine("Введите новое имя клиента ");
+                        string name = Console.ReadLine();
 
-                    InputController.NullException(name);
+                        InputController.NullException(name);
 
-                    clientInfo.FirstName = name;
-                    break;
-                case 2:
-                    Console.WriteLine("Введите новую фамилию клиента ");
-                    string secondName = Console.ReadLine();
+                        client.FirstName = name;
+                        break;
+                    case 2:
+                        Console.WriteLine("Введите новую фамилию клиента ");
+                        string secondName = Console.ReadLine();
 
-                    InputController.NullException(secondName);
+                        InputController.NullException(secondName);
 
-                    clientInfo.SecondName = secondName;
-                    break;
-                case 3:
-                    Console.WriteLine("Введите новый телефон клиента ");
-                    string phone = Console.ReadLine();
+                        client.SecondName = secondName;
+                        break;
+                    case 3:
+                        Console.WriteLine("Введите новый телефон клиента ");
+                        string phone = Console.ReadLine();
 
-                    InputController.NullException(phone);
+                        InputController.NullException(phone);
 
-                    clientInfo.PhoneNum = phone;
-                    break;
+                        client.PhoneNum = phone;
+                        break;
+                }
+
+                uint orderAmount = 0;
+
+                client.OrderAmount = orderAmount;
             }
 
-            uint orderAmount = 0;
-
-            clientInfo.OrderAmount = orderAmount;
-
             return clientInfo;
+        }
+
+        public uint ClientIdInput()
+        {
+            Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть");
+
+            uint numberId = 0;
+            while (!uint.TryParse(Console.ReadLine(), out  numberId))
+            {
+                Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть цифрами");
+            }
+
+            return numberId;
         }
     }
 }

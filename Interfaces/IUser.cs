@@ -10,6 +10,7 @@ namespace AccountingApp.Data.Interfaces
     {
         public T InputForAdd();
         public T InputForDelete();
-        public T InputForEdit();
+        public List<T> InputForEdit();
+        public uint ClientIdInput();
     }
 }

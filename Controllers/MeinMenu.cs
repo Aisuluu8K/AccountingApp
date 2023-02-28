@@ -69,15 +69,15 @@ namespace AccountingApp.Data.Controllers
                                 case 3:
                                     clientsController.Delete(clientsController.InputForDelete());
                                     break;
-                                //case 4:
-                                //    clientsController.ShowClientsOrders();
-                                //    break;
-                                //case 5:
-                                //    clientsController.Return();
-                                //    break;
-                                //case 6:
-                                //    clientsController.Exit();
-                                //    break;
+                                case 4:
+                                    clientsController.ShowClientsOrders(clientsController.ClientIdInput());
+                                    break;
+                                    //case 5:
+                                    //    clientsController.Return();
+                                    //    break;
+                                    //case 6:
+                                    //    clientsController.Exit();
+                                    //    break;
 
                             }
 
