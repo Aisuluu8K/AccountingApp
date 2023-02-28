@@ -111,20 +111,13 @@ namespace AccountingApp.Data.Controllers
         {
             DbSet<Order> orders = _context.Set<Order>();
 
-            if (orders == default(DbSet<Order>))
-                return default(Order);
-
             DbSet<Client> client = _context.Set<Client>();
-
-            if (client == default(DbSet<Client>))
-                return default(Client);
-
 
             List<Order> list = orders.Where(x => x.ClientID == clientId).ToList();
 
             var clientName = client.Where(a => a.id == clientId).FirstOrDefault();
 
-            if (clientName.Any())
+            if (CountOrders(clientName.id) == null)
             {
                 Console.WriteLine("Клиент не найден");
                 return null;
@@ -163,7 +156,7 @@ namespace AccountingApp.Data.Controllers
 
             client.PhoneNum = phoneNum;
 
-            client.OrderAmount = CountOrders(client.id);
+            client.OrderAmount = 0;
             client.ClientOrders = ShowClientsOrders(client.id);
 
             return client;
@@ -197,9 +190,10 @@ namespace AccountingApp.Data.Controllers
         {
             Console.WriteLine("Список клиентов");
 
+            Console.WriteLine("     ID     |      Имя      |      Фамилия     |");
+
             foreach (var i in _context.Clients)
             {
-                Console.WriteLine("     ID     |      Имя      |      Фамилия     |");
                 Console.WriteLine("------------------------------------------------");
                 Console.WriteLine($"{i.id} | {i.FirstName} | {i.SecondName}");
             }
