@@ -12,6 +12,7 @@ namespace AccountingApp.Data.Interfaces
     {
         public List<Order> ShowClientsOrders(uint clientId);
         public uint CountOrders(uint clientId);
+        public uint ClientIdInput();
 
     }
 }

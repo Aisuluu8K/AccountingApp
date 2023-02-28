@@ -164,7 +164,7 @@ namespace AccountingApp.Data.Controllers
                 Console.WriteLine("Введите Id заказа цифрами");
             }
 
-            order = _context.Clients.Where(x => x.id == numberId).FirstOrDefault();
+            order = _context.Orders.Where(x => x.id == numberId).FirstOrDefault();
 
             return order;
         }
@@ -192,6 +192,7 @@ namespace AccountingApp.Data.Controllers
                 "3. Id клиента");
 
             int.TryParse(Console.ReadLine(), out int field);
+
             orderInfo = _context.Orders.Where(x => x.id == orderId).ToList();
 
             foreach (Order order in orderInfo)
@@ -208,41 +209,25 @@ namespace AccountingApp.Data.Controllers
                         break;
                     case 2:
                         Console.WriteLine("Введите новую цену заказа ");
-                        float secondName = Console.ReadLine();
-
-                        InputController.NullException(secondName);
-
-                        client.SecondName = secondName;
+                        float orderPrice;
+                        while (!float.TryParse(Console.ReadLine(), out orderPrice))
+                        {
+                            Console.WriteLine("Введите цену заказа цифрами ");
+                        }
+                        order.OrderPrice = orderPrice;
                         break;
                     case 3:
-                        Console.WriteLine("Введите новый телефон клиента ");
-                        string phone = Console.ReadLine();
-
-                        InputController.NullException(phone);
-
-                        client.PhoneNum = phone;
+                        Console.WriteLine("Введите id клиента ");
+                        uint clientId;
+                        while (!uint.TryParse(Console.ReadLine(), out clientId))
+                        {
+                            Console.WriteLine("Введите id клиента цифрами ");
+                        }
+                        order.ClientID = clientId;
                         break;
                 }
-
-                uint orderAmount = 0;
-
-                client.OrderAmount = orderAmount;
             }
-
-            return clientInfo;
-        }
-
-        public uint ClientIdInput()
-        {
-            Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть");
-
-            uint numberId = 0;
-            while (!uint.TryParse(Console.ReadLine(), out numberId))
-            {
-                Console.WriteLine("Введите Id клиента заказы которого хотите посмотреть цифрами");
-            }
-
-            return numberId;
+            return orderInfo;
         }
     }
 }

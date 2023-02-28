@@ -241,7 +241,7 @@ namespace AccountingApp.Data.Controllers
                         break;
                 }
 
-                uint orderAmount = 0;
+                uint orderAmount = CountOrders(clientId);
 
                 client.OrderAmount = orderAmount;
             }

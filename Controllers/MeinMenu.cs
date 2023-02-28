@@ -43,12 +43,12 @@ namespace AccountingApp.Data.Controllers
 
 
                             Console.WriteLine("Список клиентов");
-                            Console.WriteLine("     ID     |      Имя      |      Фамилия     |");
+                            Console.WriteLine("     ID     |      Имя      |      Фамилия     |     Количество заказов  |     |");
 
                             foreach (var item in db.Clients)
                             {
                                 Console.WriteLine("------------------------------------------------");
-                                Console.WriteLine($"{item.id} | {item.FirstName} | {item.SecondName}");
+                                Console.WriteLine($"{item.id} | {item.FirstName} | {item.SecondName} |{item.OrderAmount}| {item.DateAdd} |");
                             }
 
                             int methodCod;
@@ -108,7 +108,7 @@ namespace AccountingApp.Data.Controllers
                             Console.WriteLine("Список Заказов");
                             Console.WriteLine("     ID     |      Описание      |      Цена     |  Дата регистрации   |   Дата завершения | Клиент |");
 
-                            foreach (var i in Order)
+                            foreach (var i in db.Orders)
                             {
                                 Console.WriteLine("------------------------------------------------");
                                 Console.WriteLine($"{i.id} | {i.Description} | {i.OrderPrice} | {i.OrderDate}  | {i.CloseDate}  |  ");
