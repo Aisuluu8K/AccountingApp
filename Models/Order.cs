@@ -18,5 +18,6 @@ namespace AccountingApp.Data.Models
         [ForeignKey("Client")]
         public uint ClientID { get; set; }
 
+
     }
 }
