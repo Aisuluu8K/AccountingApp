@@ -125,7 +125,12 @@ namespace AccountingApp.Data.Controllers
             else
             {
                 Console.WriteLine($"Заказчик: {clientName.SecondName} {clientName.FirstName}");
+                foreach(var i in list)
+                {
+                    Console.WriteLine($"Номер заказа {i.id} Описание заказа: {i.Description} Цена: {i.OrderPrice}");
+                }
             }
+
 
 
             return list;
