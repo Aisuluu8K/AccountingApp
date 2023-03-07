@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AccountingApp.Data.Repository
 {
-    internal interface IRepository<T>
+    public interface IRepository<T>
     {
         public T Add(T item);
         public void Edit(List<T> item);

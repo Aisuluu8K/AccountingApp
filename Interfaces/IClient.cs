@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AccountingApp.Data.Interfaces
 {
-    internal interface IClient
+    public interface IClient
     {
         public List<Order> ShowClientsOrders(uint clientId);
         public uint CountOrders(uint clientId);

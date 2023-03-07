@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace AccountingApp.Data.Controllers
 {
-    internal class ClientsController : IClient, IRepository<Client>, IUser<Client>
+    public class ClientsController : IClient, IRepository<Client>, IUser<Client>
     {
         protected readonly AppDbContext _context;
 
